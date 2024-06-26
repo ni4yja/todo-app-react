@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   const defaultData = [
@@ -13,15 +13,37 @@ function App() {
 
   const [todos, setTodos] = useState(defaultData)
 
+  useEffect(() => {
+    saveData()
+  }, [todos])
+
+  function saveData() {
+    const storageData = JSON.stringify(todos)
+    localStorage.setItem('todos', storageData)
+  }
+
+  function toggleDone(id) {
+    setTodos(
+      todos.map(todo =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
+    )
+  }
+
+  function removeTodo(id) {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
   function handleSubmit(event) {
     event.preventDefault()
     const formData = new FormData(event.target)
-    const query = formData.get('query')
+    const todo = formData.get('todo')
+
     setTodos([
       ...todos,
       {
         done: false,
-        content: query,
+        content: todo,
         type: 'Personal',
         id: Date.now(),
       },
@@ -30,8 +52,10 @@ function App() {
   }
 
   const todoItemsList = todos.map(todo => (
-    <li key={todo.id} className="todo-item">
-      {todo.content}
+    <li key={todo.id} className={`todo-item ${todo.done ? 'done' : ''}`}>
+      <span class="task" onClick={() => toggleDone(todo.id)}>{todo.content}</span>
+      <span class="label">{todo.type}</span>
+      <button className="remove-btn" onClick={() => removeTodo(todo.id)}></button>
     </li>
   ))
 
@@ -41,7 +65,7 @@ function App() {
         <h2>New Task</h2>
         <form onSubmit={handleSubmit}>
           <label htmlFor="newTodo">
-            <input type="text" name="query" className="new-todo" id="newTodo" />
+            <input type="text" name="todo" className="new-todo" id="newTodo" />
           </label>
           <button type="submit" className="add-btn">
             Add task
