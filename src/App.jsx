@@ -13,6 +13,7 @@ function App() {
 
   const [todos, setTodos] = useState(defaultData)
   const [category, setCategory] = useState('Personal')
+  const [filter, setFilter] = useState('All')
 
   useEffect(() => {
     saveData()
@@ -56,11 +57,19 @@ function App() {
     setCategory('Personal')
   }
 
-  const todoItemsList = todos.map(todo => (
+  const filteredTodos = filter === 'All' ? todos : todos.filter(todo => todo.type === filter)
+
+  const todoItemsList = filteredTodos.map(todo => (
     <li key={todo.id} className={`todo-item ${todo.done ? 'done' : ''}`}>
       <span className="task" onClick={() => toggleDone(todo.id)}>{todo.content}</span>
       <span className="label">{todo.type}</span>
       <button className="remove-btn" onClick={() => removeTodo(todo.id)}></button>
+    </li>
+  ))
+
+  const todoTagsList = ['All', 'Personal', 'Work', 'Other'].map(tag => (
+    <li key={tag}>
+      <span className={`tag ${filter === tag ? 'active' : ''}`} onClick={() => setFilter(tag)}>{tag}</span>
     </li>
   ))
 
@@ -106,6 +115,7 @@ function App() {
       </section>
       <section className="review-container">
         <h2>ToDo List</h2>
+        <ul className="tags-wrapper">{todoTagsList}</ul>
         <ul className="todo-list">{todoItemsList}</ul>
       </section>
     </div>
