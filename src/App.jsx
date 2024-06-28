@@ -12,6 +12,7 @@ function App() {
   ]
 
   const [todos, setTodos] = useState(defaultData)
+  const [category, setCategory] = useState('Personal')
 
   useEffect(() => {
     saveData()
@@ -38,23 +39,27 @@ function App() {
     event.preventDefault()
     const formData = new FormData(event.target)
     const todo = formData.get('todo')
+    const category = formData.get('category') || 'Personal'
+
+    if (!todo) return
 
     setTodos([
       ...todos,
       {
         done: false,
         content: todo,
-        type: 'Personal',
+        type: category,
         id: Date.now(),
       },
     ])
     event.target.reset()
+    setCategory('Personal')
   }
 
   const todoItemsList = todos.map(todo => (
     <li key={todo.id} className={`todo-item ${todo.done ? 'done' : ''}`}>
-      <span class="task" onClick={() => toggleDone(todo.id)}>{todo.content}</span>
-      <span class="label">{todo.type}</span>
+      <span className="task" onClick={() => toggleDone(todo.id)}>{todo.content}</span>
+      <span className="label">{todo.type}</span>
       <button className="remove-btn" onClick={() => removeTodo(todo.id)}></button>
     </li>
   ))
@@ -67,6 +72,33 @@ function App() {
           <label htmlFor="newTodo">
             <input type="text" name="todo" className="new-todo" id="newTodo" />
           </label>
+          <fieldset>
+          <legend>Please select your todo type:</legend>
+          <div className="labels">
+            <input
+              id="typeChoice1"
+              type="radio"
+              name="category"
+              value="Personal"
+              defaultChecked={category === 'Personal'}
+            />
+            <label htmlFor="typeChoice1">Personal</label>
+            <input
+              id="typeChoice2"
+              type="radio"
+              name="category"
+              value="Work"
+            />
+            <label htmlFor="typeChoice2">Work</label>
+            <input
+              id="typeChoice3"
+              type="radio"
+              name="category"
+              value="Other"
+            />
+            <label htmlFor="typeChoice3">Other</label>
+          </div>
+        </fieldset>
           <button type="submit" className="add-btn">
             Add task
           </button>
