@@ -1,8 +1,5 @@
-# React + Vite
+# How To Filter Todo Items? React & Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple todo app on React & Vite. If you're curious how it was implemented, read [my article on Medium](https://medium.com/@ni4yja/how-to-filter-todo-items-react-vite-55ebd54aa8b7).
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config)
